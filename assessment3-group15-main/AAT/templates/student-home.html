@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <div class="container">
+        <h1>Automated Assessment Tool</h1>
+        <br>
+        <h3>Students</h3>
+        <br>
+        <div class="row">
+            <div class="col-sm-4">
+                <a href="{{ url_for('student_formative_main') }}" class="btn btn-secondary btn-lg btn-block">Take Formative Assessment</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="{{ url_for('student_summative_main') }}" class="btn btn-secondary btn-lg btn-block">Take Summative Assessment</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="{{ url_for('student_stat_main') }}" class="btn btn-secondary btn-lg btn-block">Student Review Statistics</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

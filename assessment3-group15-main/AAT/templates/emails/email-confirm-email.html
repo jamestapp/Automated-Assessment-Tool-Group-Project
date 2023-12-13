@@ -1,0 +1,9 @@
+{% extends "emails/email-layout.html" %}
+{% block content %}
+
+<p>Hello {{ user.name }}</p>
+<p>Thank you for registering as a user of our Automated Assessment Tool.</p>
+<p>Please click <a href="{{ url_for('confirm_email', token=token, _external=True) }}">here</a> to confirm your email and start using the site.</p>
+<p>Thanks, AAT Administrators</p>
+
+{% endblock content %}

@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Register</h1>
+<div class="card shadow-lg m-3 p-3">
+    <form method="POST" action="">
+        {{ form.csrf_token }}
+        <p>{{ form.userno.label(class_="form-label") }} {{ form.userno(class_="form-control") }}</p>
+        {% for error in form.userno.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <p>{{ form.name.label(class_="form-label") }} {{ form.name(class_="form-control") }}</p>
+        {% for error in form.name.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <p>{{ form.email.label(class_="form-label") }} {{ form.email(class_="form-control") }}</p>
+        {% for error in form.email.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <p>{{ form.confirmEmail.label(class_="form-label") }} {{ form.confirmEmail(class_="form-control") }}</p>
+        {% for error in form.confirmEmail.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+
+        <div class="progress">
+            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                aria-valuenow="0" style="width:0%" id="bar" title="password-strength"></div>
+        </div>
+
+        <p>{{ form.password.label(class_="form-label") }} {{ form.password(class_="form-control") }}</p>
+        {% for error in form.password.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <p>{{ form.confirmPassword.label(class_="form-label") }} {{ form.confirmPassword(class_="form-control") }}</p>
+        <input type="submit" value="Register" class="btn btn-primary">
+    </form>
+</div>
+
+<script>
+    const passwordInput = document.getElementById("password");
+    passwordInput.addEventListener('input', passwordStrength);
+    const bar = document.getElementById("bar")
+    const desc = document.getElementById("desc")
+
+    function passwordStrength(e) {
+
+
+        const bar = document.getElementById("bar")
+        let password = e.target.value
+        let passwordScore = 0
+        if (password.match(/[a-z]/g)) passwordScore++
+        if (password.match(/[A-Z]/g)) passwordScore++
+        if (password.match(/[0-9]/g)) passwordScore++
+        if (password.match(/[^\s\w]/g)) passwordScore++
+        if (password.length > 12) passwordScore++
+        switch (passwordScore) {
+            case 0:
+                bar.setAttribute("style", "width:0%")
+                bar.setAttribute("aria-valuenow", "0")
+                bar.innerHTML = ''
+                bar.className = 'progress-bar bg-danger'
+                break;
+            case 1:
+                bar.setAttribute("style", "width:20%")
+                bar.setAttribute("aria-valuenow", "20")
+                bar.innerHTML = 'Very Poor'
+                bar.className = 'progress-bar bg-danger'
+                break;
+            case 2:
+                bar.setAttribute("style", "width:40%")
+                bar.setAttribute("aria-valuenow", "40")
+                bar.innerHTML = 'Poor'
+                bar.className = 'progress-bar bg-danger'
+                break;
+            case 3:
+                bar.setAttribute("style", "width:60%")
+                bar.setAttribute("aria-valuenow", "60")
+                bar.innerHTML = 'Medium'
+                bar.className = 'progress-bar bg-warning'
+                break;
+            case 4:
+                bar.setAttribute("style", "width:80%")
+                bar.setAttribute("aria-valuenow", "80")
+                bar.innerHTML = 'Strong'
+                bar.className = 'progress-bar bg-success'
+                break;
+            case 5:
+                bar.setAttribute("style", "width:100%")
+                bar.setAttribute("aria-valuenow", "100")
+                bar.innerHTML = 'Very Strong'
+                bar.className = 'progress-bar bg-success'
+                break;
+        }
+    }
+</script>
+{% endblock content %}

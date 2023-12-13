@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+        <h1>Automated Assessment Tool</h1>
+        <br>
+        <h3>Teaching Staff</h3>
+        <br>
+        <div class="row">
+            <div class="col-sm-4">
+                <a href="{{ url_for('lecturer_assessment_create_formative') }}" class="btn btn-primary btn-lg btn-block">Create Formative Assessment</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="{{ url_for('lecturer_assessment_create_summative') }}" class="btn btn-primary btn-lg btn-block">Create Summative Assessment</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="{{ url_for('lecturer_stat_main') }}" class="btn btn-primary btn-lg btn-block">Teaching Staff Review Statistics</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="{{ url_for('delete_assessment') }}" class="btn btn-primary btn-lg btn-block">Update Assessment</a>
+            </div>
+        </div>
+{% endblock content %}

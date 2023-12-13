@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Login</h1>
+<div class="card shadow-lg m-3 p-3">
+    <form method="POST" action="">
+        {{ form.csrf_token }}
+        <p>{{ form.username.label(class_="form-label") }} {{ form.username(class_="form-control") }}</p>
+        <p>{{ form.password.label(class_="form-label") }} {{ form.password(class_="form-control") }}</p>
+        <input type="submit" value="Login" class="btn btn-primary">
+    </form>
+</div>
+<div class="card shadow-lg m-3 p-3">
+    <p><a href="{{ url_for('forgot_password') }}">Forgot Password?</a></p>
+ </div>
+{% endblock content %} 

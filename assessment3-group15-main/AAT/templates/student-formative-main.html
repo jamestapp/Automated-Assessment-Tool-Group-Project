@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+<div>
+    <p>Formative Assessments</p>
+</div>
+{% for assessment in assessments %}
+<div>
+    <p><a href="{{ url_for('student_take_assessment', assessment_id=assessment.id ) }}">{{ assessment.title }}</a></p>
+</div>
+{% endfor %}
+{% endblock content %}

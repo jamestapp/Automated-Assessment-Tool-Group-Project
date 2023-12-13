@@ -1,0 +1,154 @@
+{% extends "layout.html" %}
+{% block content %}
+<form method="POST" action="/modify_lecturer">
+<input style="display: none" name="ass_id" value="{{ ass_id }}">
+<input style="display: none" name="title" value="{{ title }}">
+    <div id="wrap">
+        <div class="content">
+            <a>&nbsp </a>
+            Title: {{ title }}
+        </div>
+        {% for question in questions %}
+            {% if question.type == 'trueorfalse' %}
+                <div class="card shadow-lg m-3 p-3" id="box_loop_{{ loop.index }}">
+                    <h style="color:blue;">Question</h>
+                    <div>Type your question:</div>
+                    <div><textarea required name="question{{ loop.index }}"
+                                   style="width:1000px; height:200px;">{{ question.question_text }}</textarea><select name="tof{{ loop.index }}"
+                                                                                          id="answer">
+                        {% if question.truefalse.is_true == 'False' %}
+                            <option value="True">True</option>
+                            <option selected="selected" value="False">False</option>
+                        {% else %}
+                            <option selected="selected" value="True">True</option>
+                            <option value="False">False</option>
+                        {% endif %}
+                    </select>
+                        <div>Type explanation:</div>
+                        <textarea name="explanation{{ loop.index }}" style="width:1000px; height:200px;">{{ question.explanation }}</textarea>
+                    </div>
+                    <input type="submit" value="Delete question" onclick="delete_question({{ loop.index }})"></div>
+                </div>
+            {% elif question.type == 'multi-choice' %}
+                <div class="card shadow-lg m-3 p-3" id="box_loop_{{ loop.index }}">
+                    <h style="color:blue;">Question</h>
+                    <div>Type your question:</div>
+                    <textarea required name="question{{ loop.index }}"
+                              style="width:1000px; height:200px;">{{ question.question_text }}</textarea>
+                    <div name="option{{ loop.index }}" id="option{{ loop.index }}">
+                        <input type="text" value="{{ question.choices[0].choice_text }}" name="choice{{ loop.index }}" placeholder="Choice A">
+                        <select name="answer{{ loop.index }}" id="answer{{ loop.index }}">
+                       {% if question.choices[0].is_correct == 'True' %}
+                            <option selected="selected" value="True">True</option>
+                            <option value="False">False</option>
+                        {% else %}
+                            <option value="True">True</option>
+                            <option selected="selected" value="False">False</option>
+                        {% endif %}
+                        </select>
+                        <input type="text" value="{{ question.choices[1].choice_text }}" name="choice{{ loop.index }}" placeholder="Choice B">
+                        <select name="answer{{ loop.index }}" id="answer{{ loop.index }}">
+                       {% if question.choices[1].is_correct == 'True' %}
+                            <option selected="selected" value="True">True</option>
+                            <option value="False">False</option>
+                        {% else %}
+                            <option value="True">True</option>
+                            <option selected="selected" value="False">False</option>
+                        {% endif %}
+                        </select>
+                        <input type="text" value="{{ question.choices[2].choice_text }}" name="choice{{ loop.index }}" placeholder="Choice C">
+                        <select name="answer{{ loop.index }}" id="answer{{ loop.index }}">
+                       {% if question.choices[2].is_correct == 'True' %}
+                            <option selected="selected" value="True">True</option>
+                            <option value="False">False</option>
+                        {% else %}
+                            <option value="True">True</option>
+                            <option selected="selected" value="False">False</option>
+                        {% endif %}
+                        </select>
+                        <input type="text" value="{{ question.choices[3].choice_text }}" name="choice{{ loop.index }}" placeholder="Choice D">
+                        <select name="answer{{ loop.index }}" id="answer{{ loop.index }}">
+                       {% if question.choices[3].is_correct == 'True' %}
+                            <option selected="selected" value="True">True</option>
+                            <option value="False">False</option>
+                        {% else %}
+                            <option value="True">True</option>
+                            <option selected="selected" value="False">False</option>
+                        {% endif %}
+                        </select>
+                    </div>
+                    <a>&nbsp </a>
+                    <p>Type explanation:</p>
+                    <textarea name="explanation{{ loop.index }}"
+                              style="width:1000px; height:200px;">{{ question.explanation }}</textarea>
+                    <input type="submit" value="Delete question" onclick="delete_question({{ loop.index }})"></div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+  <input type="button" value="Add a Multi-choice question" onclick="add_multi()">
+  <input type="button" value="Add a TF question" onclick="add_TF()">
+      <input type="submit" value="Submit Assessment">
+  <a>number of questions: </a><input type="text" id="box_count" name="box_count" value={{questions | length}} readonly>
+    <br>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+
+    <script>
+  // var box_count = 0;
+  var box_count = Number(jQuery("#box_count").val().trim());
+  function add_multi(){
+
+
+    if(box_count<10){
+      box_count++;
+      jQuery("#box_count").val(box_count);
+      // true
+      jQuery("#wrap").append('<div class="card shadow-lg m-3 p-3" id="box_loop_'+box_count+'"><h style="color:blue;">Question</h><div>Type your question:</div><textarea required name="question'+box_count+'" style="width:1000px; height:200px;"></textarea><div name="option'+box_count+'" id="option'+box_count+'"><input type="text" name="choice'+box_count+'" placeholder="Choice A"><select name="answer'+box_count+'" id="answer'+box_count+'"><option value="True">True</option><option value="False">False</option></select><input type="text" name="choice'+box_count+'" placeholder="Choice B"><select name="answer'+box_count+'" id="answer'+box_count+'"><option value="True">True</option><option value="False">False</option></select><input type="text" name="choice'+box_count+'" placeholder="Choice C"><select name="answer'+box_count+'" id="answer'+box_count+'"><option value="True">True</option><option value="False">False</option></select><input type="text" name="choice'+box_count+'" placeholder="Choice D"><select name="answer'+box_count+'" id="answer'+box_count+'"><option value="True">True</option><option value="False">False</option></select></div><a>&nbsp </a><p>Type explanation:</p><textarea name="explanation'+box_count+'" style="width:1000px; height:200px;"></textarea><input type="submit" value="Delete question" onclick="delete_question('+box_count+')"></div></div>');
+
+
+
+    }else if(box_count>=10){
+      window.alert("number of questions has reached the limit");
+      console.log("number of questions has reached the limit");
+    }
+
+  }
+
+  // function add_TF(){
+
+  //   if(box_count<10){
+  //   box_count++;
+  //   // jQuery("#box_count").val(box_count);
+  //   $.get('/tf', function(data) {
+  //     jQuery("#wrap").append('<div class="card shadow-lg m-3 p-3" id="box_loop_'+box_count+'"><h style="color:blue;">Question</h>'+ data +'<input type="submit" value="Delete question" onclick="delete_question('+box_count+')"></div></div>');
+  //   });
+
+  //   }else if(box_count>=11){
+  //     console.log("number of questions has reach the limit");
+  //   }
+  // }
+
+  function add_TF(){
+
+    if(box_count<10){
+    box_count++;
+    jQuery("#box_count").val(box_count);
+
+    jQuery("#wrap").append('<div class="card shadow-lg m-3 p-3" id="box_loop_'+box_count+'"><h style="color:blue;">Question</h><div>Type your question:</div><div><textarea required name="question'+box_count+'" style="width:1000px; height:200px;"></textarea><select name="tof'+box_count+'" id="answer"><option value="True">True</option><option value="False">False</option></select><div>Type explanation:</div><textarea name="explanation'+box_count+'" style="width:1000px; height:200px;"></textarea></div><input type="submit" value="Delete question" onclick="delete_question('+box_count+')"></div></div>');
+
+
+  }else if(box_count>=11){
+      console.log("number of questions has reach the limit");
+    }
+  }
+
+  function delete_question(count){
+    jQuery("#box_loop_"+count).remove();
+    // var box_count=jQuery("#box_count").val();
+    box_count--;
+    jQuery("#box_count").val(box_count);
+  }
+
+</script>
+{% endblock content %}

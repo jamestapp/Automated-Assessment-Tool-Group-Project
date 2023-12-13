@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-sm-4">
+			<a href="{{ url_for('lecturer_stat_main') }}" class="btn btn-primary btn-lg btn-block">Statistics Homepage</a>
+		</div>
+	</div>
+	<h1>Assessment Statistics</h1>
+	<p>Please select an assessment to view</p>
+
+	{% for assessment in assessments %}
+	<div class="row">
+		<div class="col-sm-4">
+			<a class="btn btn-primary btn-lg btn-block" href="{{ url_for('lecturer_stat_assessment_main_assessment', assessment_id=assessment.id) }}">{{ assessment.title }}</a>
+		</div>
+	</div>
+	<br>
+	{% endfor %}
+{% endblock content %}

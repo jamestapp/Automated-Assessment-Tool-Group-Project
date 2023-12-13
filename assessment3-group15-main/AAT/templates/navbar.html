@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+    </li>
+    {% if current_user.is_authenticated %}
+    {% if current_user.userType == 'lecturer'%}
+    <!-- <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('lecturer_question') }}">Existing Questions</a>
+    </li> -->
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('lecturer_assessment_main') }}">Assessment</a>
+    </li>
+    <!-- <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('lecturer_feedback_main') }}">Feedback</a>
+    </li> -->
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('lecturer_stat_main') }}">Review Statistics</a>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('student_formative_main') }}">Formative Assessment</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('student_summative_main') }}">Summative Assessment</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('student_stat_main') }}">Review Statistics</a>
+    </li>
+    {% endif %}
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">User</a>
+      <ul class="dropdown-menu bg-dark">
+        <li><a class="dropdown-item nav-link" href="{{ url_for('user_dashboard') }}">My Dashboard</a></li>
+        <li><a class="dropdown-item nav-link" href="{{ url_for('update_details') }}">Update Details</a></li>
+        <li><a class="dropdown-item nav-link" href="{{ url_for('change_password') }}">Change Password</a></li>
+        <li><a class="dropdown-item nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+      </ul>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('student_login') }}"> Student Login</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('student_register') }}">Student Register</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('lecturer_login') }}"> Lecturer Login</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('lecturer_register') }}">Lecturer Register</a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>

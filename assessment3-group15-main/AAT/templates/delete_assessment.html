@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+<div>
+    <p>Update Assessment</p>
+</div>
+{% for assessment in assessments %}
+<form method="post">
+    <div>
+        <p>{{ assessment.title }}</p>
+        <input type="hidden" name="assessment_id" value="{{ assessment.id }}">
+        <button type="submit">Delete Assessment</button>
+        <button type="button" onclick="window.location.href='{{ url_for('delete_question_in_assessment', ass_id=assessment.id) }}'">Delete Assessment Questions</button>
+        <button type="button" onclick="window.location.href='{{ url_for('modify_question_in_assessment', ass_id=assessment.id) }}'">Modify Assessment Questions</button>
+    </div>
+</form>
+{% endfor %}
+{% endblock content %}
+

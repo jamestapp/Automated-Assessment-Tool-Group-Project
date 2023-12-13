@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+<div>
+    <p>Assessments List</p>
+</div>
+
+{% for assessment in assessments %}
+<div>
+    <form method="post">
+    <a>{{ assessment.title }}</a><a>--------</a><a>Assessment Type: {{ assessment.type }}</a>
+    <a href="{{ url_for('lecturer_assessment_question_update', ass_id=assessment.id ) }}">Update</a>
+    <button type="submit" name="assessment_id" id="assessment_id" value="{{ assessment.id }}" >Delete</button>
+    </form>
+</div>
+{% endfor %}
+</form>
+{% endblock content %}

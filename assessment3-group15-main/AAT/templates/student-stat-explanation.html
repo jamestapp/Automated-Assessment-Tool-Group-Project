@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center my-5">Explanation</h2>
+        </div>
+    </div>
+    {% for question in questions %}
+    <div class="row border mb-4 p-3 rounded">
+        <div class="col-md-12">
+            <h3 class="text-primary mb-3">Question: {{ question.question_text }}</h3>
+            <p class="lead">Feedback: {{ question.explanation }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

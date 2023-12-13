@@ -1,0 +1,23 @@
+<form method="POST" action="">
+    {{ form.csrf_token }}
+    <div>Type your question:</div>
+    <div>
+        <div class="field_box">{{ formQ.question_text(style="width:1000px; height:200px;") }}</div>
+        <div>Is correct: {{ formTF.is_true }}</div>
+        <a>&nbsp </a>
+        <div>Type explanation:</div>
+        <div class="field_box">{{ formQ.explanation(style="width:1000px; height:200px;") }}</div>
+        <!-- <input type="submit" value="Submit"> -->
+    </div>
+  </form>
+
+
+    {{ form.csrf_token }}
+<div>Type your question:</div>
+<div>
+    <textarea required name="question" style="width:1000px; height:200px;"></textarea>
+    <select name="answer" id="answer"><option value="true">true</option><option value="false">false</option></select>
+    <div>Type explanation:</div>
+    <textarea name="explanation" style="width:1000px; height:200px;"></textarea>
+    <!-- <input type="submit" value="Submit"> -->
+</div>

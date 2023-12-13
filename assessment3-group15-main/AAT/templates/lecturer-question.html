@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+<form class="card shadow-lg m-3 p-3" method="POST" action="">
+    {% for question in questions %}
+    <a>&nbsp</a>
+    <div class="content">
+        <form>
+            <p>{ question.question_text }</p>
+            <a>&nbsp</a>
+            {% for option in choice %}
+                <form>
+                    {% if option.question_id == question.id %}
+                        <a>{ option.choice_text }</a>
+                    {% else %}
+                    {% endif %}
+                </form>
+                <a>&nbsp</a>
+            {% endfor %}
+        </form>
+    </div>
+    {% endfor %}
+</form>
+{% endblock content %}

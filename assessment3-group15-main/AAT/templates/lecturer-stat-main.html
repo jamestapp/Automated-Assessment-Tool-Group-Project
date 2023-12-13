@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Teaching-Staff Review Statistics</h1>
+	<p>Please select an option:</p>
+	<div class="row">
+		<div class="col-sm-4">
+			<a href="{{ url_for('lecturer_stat_individual_main') }}" class="btn btn-primary btn-lg btn-block">View Student Statistics</a>
+		</div>
+		<div class="col-sm-4">
+			<a href="lecturer-stat-cohorts-main" class="btn btn-primary btn-lg btn-block">View Cohort Statistics</a>
+		</div>
+		<div class="col-sm-4">
+			<a href="{{ url_for('lecturer_stat_assessment_main') }}" class="btn btn-primary btn-lg btn-block">View Assessment Statistics</a>
+		</div>
+	</div>
+</div>
+{% endblock %}

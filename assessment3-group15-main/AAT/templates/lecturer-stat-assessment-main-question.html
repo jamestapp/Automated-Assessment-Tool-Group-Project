@@ -1,0 +1,248 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+    <div class="col-sm-4">
+        <a href="{{ url_for('lecturer_stat_assessment_main_assessment', assessment_id=question.assessment.id) }}" class="btn btn-primary btn-lg btn-block">View Assessment</a>
+    </div>
+	<h1>Question Statistics</h1>
+    <label for="annual_intake">Choose a cohort to view a detailed breakdown and graphs:</label>
+    <select id="annual_intake" onchange="updateTables()">
+        <option value="all" selected>All</option>
+        {% for cohort in cohorts %}
+        <option value="{{cohort}}">{{ cohort }}</option>
+        {% endfor %}
+    </select>
+    <script>
+        function updateTables(){
+            let total = 0
+            let students = 0
+            const val = document.getElementById("annual_intake").value
+            //console.log(val)
+            //console.log(val !== "all")
+            if(val !== "all"){
+                const rows = document.getElementsByClassName("tablerow")
+                const cohorts = document.getElementsByClassName("cohorts")
+
+                for(let i=0; i<cohorts.length; i++){
+
+                    if(cohorts[i].innerHTML !== val){
+                        rows[i].style.display = "none"
+                    } else {
+                        rows[i].style.display = "table-row"
+                        students ++;
+                    }
+
+                }
+            } else {
+                const rows = document.getElementsByClassName("tablerow")
+                for(let i=0; i<rows.length; i++){
+                    rows[i].style.display = "table-row"
+                }
+                students = rows.length
+            }
+
+            const tot = document.getElementById("total")
+            //console.log(total/students)
+            //console.log(total)
+            //console.log(students)
+            tot.innerHTML = String(students)
+
+            {% if question.choices[0] %}
+                const cohorts = document.getElementsByClassName("cohorts")
+                const answers = document.getElementsByClassName("answer")
+                const choice = document.getElementsByClassName("choice")
+                const stats = document.getElementsByClassName("stat")
+                const percent = document.getElementsByClassName("percent")
+                const qStats = document.getElementsByClassName("qStats")
+                for(let i=0; i<choice.length; i++){
+                    let anstotal = 0
+                    for(let j=0; j<answers.length; j++){
+                        //console.log(choice[i].innerHTML)
+                        //console.log(answers[j].innerHTML)
+                        //console.log()
+                        if(choice[i].innerHTML == answers[j].innerHTML && (cohorts[j].innerHTML == val || val=='all')){
+                            anstotal ++;
+                            //console.log(anstotal)
+                        }
+                    }
+                    stats[i].innerHTML = anstotal
+                    //console.log(anstotal)
+                    //console.log(students)
+                    percent[i].innerHTML = (anstotal/students*100).toFixed(0)
+                    qStats[i].style.display = "block"
+
+                }                
+                
+                //start of graphs
+                xValues = []
+                yValues = []
+                barColors = "blue"
+
+                for(let i=0; i<choice.length; i++){
+                    xValues.push(choice[i].innerHTML)
+                    yValues.push(stats[i].innerHTML)
+                }
+
+            {% else %}
+                const cohorts = document.getElementsByClassName("cohorts")
+                const answers = document.getElementsByClassName("answer")
+                const stats = document.getElementById("stat")
+                const percent = document.getElementById("percent")
+                const myTotal = document.getElementById("myTotal")
+                const TFans = document.getElementById("true").innerHTML
+                let anstotal = 0
+                //console.log(TFans)
+
+                for(let i=0; i<answers.length; i++){
+                    //console.log(answers[i].innerHTML)
+                    //console.log(cohorts[i].innerHTML)
+                    if(TFans == answers[i].innerHTML && (cohorts[i].innerHTML == val || val=='all')){
+                        anstotal ++;
+                }
+  
+            }
+                stats.innerHTML = anstotal
+                percent.innerHTML = (anstotal/students*100).toFixed(0)
+                myTotal.innerHTML = String(students)
+                document.getElementById("qStats").style.display = "block"
+                                
+                //start of graph
+                xValues = ["True", "False"]
+                yValues = []
+                possibleColours = ["yellow", "brown","blue","orange"]
+                barColors = []
+
+                if(TFans == 'True'){
+                    yValues = [anstotal, students-anstotal]
+                } else{
+                    yValues = [students-anstotal, anstotal]
+                }
+                
+                {% endif %}            
+
+
+
+                //console.log(xValues)
+                //console.log(yValues)
+
+                const myChart = new Chart("barChart", {
+                    type:"bar",
+                    data:{
+                        labels: xValues,
+                        datasets: [{
+                            backgroundColor: barColors,
+                            data: yValues
+                        }]
+                    },
+                    options: {
+                        legend: {display: false},
+                        scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                    }
+  }
+                })
+        }
+
+    </script>
+    <br>
+    <h4>Total Attempts:</h3>
+    <h6 id="total">Choose a cohort to see the total number of answers</h6>    
+    <button type="button" onclick="toggleTable()" id="myButton">
+        Hide table
+    </button>
+    <script>
+        function toggleTable(){
+            const button = document.getElementById("myButton")
+            const table = document.getElementById("toggleTable")
+            if (table.style.display == "none"){
+                button.innerHTML = "Hide table"
+                table.style.display = "table"
+            } else {
+                button.innerHTML = "Show table"
+                table.style.display = "none"
+            }
+        }
+    </script>
+    <div id="toggleTable" display="none">
+    {% if question.answers %}
+        <h3>Individual</h3>
+        <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+        <!--button id="btnExport" onclick="exportReportToExcel(this)">Export HTML Table</button-->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <br>
+    <button type="button" class="btn btn-primary col-md-4" onclick="tableToExcel('excel-table', 'W3C Excel Table')"><i class="fa-sharp fa-solid fa-file-excel"></i>Export to Excel</button>
+    <br>
+    <script type="text/javascript">
+    var tableToExcel = (function() {
+    var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+    return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+    }
+    })()
+    </script>        
+		<table class="sortable table-striped table table-bordered table-hover" id="excel-table">
+            <thead>
+                <tr class="heading table-info">
+                    <th>Answer</th>
+                    <th>Student</th>
+                    <th>Cohort</th>
+                </tr>                
+            </thead>
+            <tbody>
+                {% for answer in question.answers %}
+                <tr class="tablerow">
+                    <td class="answer">{{ answer.answer }}</td>
+                    <td class="userno">{{ answer.answers.student.userno }}</td>
+                    <td class="cohorts">{{ answer.answers.student.annual_intake }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+		</table>
+	{% else %}
+		<p>No statistics found.</p>
+	{% endif %}
+    </div>
+    <div>
+        <h4>Q: {{question.question_text}}</h4>
+        {% if question.choices[0] %}
+        <div>
+            {% for choice in question.choices %}
+                {% if choice.is_correct=='True' %}
+                <div class="text-success" id="{{choice.choice_text}}">
+                    <p>A: <span class="choice">{{choice.choice_text}}</span></p>
+                    <p class="qStats" style="display:none;">This has been chosen <span class="stat"></span> times (<span class="percent"></span>%)</p>                
+                </div>
+                {% else %}
+                <div class="text-danger" id="{{choice.choice_text}}">
+                    <p>A: <span class="choice">{{choice.choice_text}}</span></p>
+                    <p class="qStats" style="display:none;">This has been chosen <span class="stat"></span> times (<span class="percent"></span>%)</p>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% else %}
+            {% if question.truefalse.is_true %}
+            <p class="text-success choice">A: <span id="true">True</span></p>
+            {% else %}
+            <p class="text-success choice">A: <span id="true">False</span></p>
+            {% endif %}
+            <p id="qStats" style="display:none;">This question has been answered correctly <span id="stat"></span> times out of <span id="myTotal"></span> (<span id="percent"></span>%)</p>
+        {% endif %}
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+        <canvas id="barChart"></canvas>
+
+    </div>
+
+	
+{% endblock content %}

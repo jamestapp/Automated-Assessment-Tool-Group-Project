@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-sm-4">
+			<a href="{{url_for('lecturer_stat_cohorts_main')}}" class="btn btn-primary btn-lg btn-block">Select Cohort</a>
+		</div>
+	</div>
+	<h1>Cohort Statistics</h1>
+	{% if stats %}
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<br>
+<button type="button" class="btn btn-primary col-md-4" onclick="tableToExcel('excel-table', 'W3C Excel Table')"><i class="fa-sharp fa-solid fa-file-excel"></i>Export to Excel</button>
+<br>
+<script type="text/javascript">
+var tableToExcel = (function() {
+var uri = 'data:application/vnd.ms-excel;base64,'
+, template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+, base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+, format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+return function(table, name) {
+if (!table.nodeType) table = document.getElementById(table)
+var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+window.location.href = uri + base64(format(template, ctx))
+}
+})()
+</script>
+		<table class="sortable table-striped table table-bordered table-hover" id="excel-table">
+			<thead>
+				<tr class="table-info heading">
+					<th>Score</th>
+					<th>Percentage</th>
+					<th>Attempt</th>
+					<th>Assessment</th>
+					<th>UserNo</th>
+					<th>Type</th>
+				</tr>				
+			</thead>
+			<tbody>
+				{% for stat in stats %}
+				<tr class="tablerow">
+					<td class="score">{{ stat.score }} / {{ stat.answers|length }}</td>
+					<td>{{ ((stat.score // stat.answers|length) * 100)|round }}%</td>
+					<td>{{ stat.attempt }}</td>
+					<td>{{ stat.assessment.title }}</td>
+					<td class="userno">{{ stat.student.userno }}</td>
+					<td>{{ stat.assessment.type }}</td>
+				</tr>
+				{% endfor %}				
+			</tbody>
+		</table>
+	{% else %}
+		<p>No statistics found.</p>
+	{% endif %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+	</script>
+		<canvas id="barChart"></canvas>
+		<script>
+		//start of graph
+		const scores = document.getElementsByClassName("score")
+		const rows = document.getElementsByClassName("tablerow")
+		console.log(Number(scores[0].innerHTML.split("/")[1]) +1)
+		let xValues = []
+				let yValues = []
+				barColors = "blue"
+
+				for(let i=0; i<Number(scores[0].innerHTML.split("/")[1] )+1; i++){
+					xValues.push(i)
+				}
+
+				for(let i=0; i<xValues.length; i++){
+					let xValue = xValues[i]
+					let yValue = 0
+					for(let j=0; j<rows.length; j++){
+						if(rows[j].style.display="table-row" && scores[j].innerHTML.split("/")[0] == xValue){
+							yValue ++
+						}
+					}
+					yValues.push(yValue)
+				}
+                const myChart = new Chart("barChart", {
+                    type:"bar",
+                    data:{
+                        labels: xValues,
+                        datasets: [{
+							backgroundColor: barColors,
+                            data: yValues
+                        }]
+                    },
+                    options: {
+                        legend: {display: false},
+                        scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                    }
+  }
+                })
+	</script>
+</div>
+{% endblock content %}

@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container">
+    <h1>Automated Assessment Tool</h1>
+    <h3>If you are a student, login or register here</h3>
+    <br>
+    <div class="row">
+        <div class="col-sm-4">
+            <a href="{{ url_for('student_register') }}" class="btn btn-primary btn-lg btn-block">Register</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="{{ url_for('student_login') }}" class="btn btn-primary btn-lg btn-block">Login</a>
+        </div>
+    </div>
+    <br>
+    <h3>If you are a lecturer, login or register here</h3> 
+    <br>
+    <div class="row">
+        <div class="col-sm-4">
+            <a href="{{ url_for('lecturer_register') }}" class="btn btn-primary btn-lg btn-block">Register</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="{{ url_for('lecturer_login') }}" class="btn btn-primary btn-lg btn-block">Login</a>
+        </div>
+    </div>
+    </div>
+{% endblock content %}

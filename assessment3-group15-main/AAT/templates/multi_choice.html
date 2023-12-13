@@ -1,0 +1,29 @@
+
+{{ form.csrf_token }}
+<div>Type your question:</div>
+  <p name="question">{{ formQ.question_text(style="width:1000px; height:200px;") }}</p> 
+  <p name="choice">Choice A: {{ formC.choice_text }}</p><a name="answer">Corrct answer: {{ formC.is_correct }}</a>
+  <p name="choice">Choice B: {{ formC.choice_text }}</p><a name="answer">Corrct answer: {{ formC.is_correct }}</a>
+  <p name="choice">Choice C: {{ formC.choice_text }}</p><a name="answer">Corrct answer: {{ formC.is_correct }}</a>
+  <p name="choice">Choice D: {{ formC.choice_text }}</p><a name="answer">Corrct answer: {{ formC.is_correct }}</a>
+  <a>&nbsp </a>
+  <p>Type explanation:</p>
+  <p class="field_box" name="explanation">{{ formQ.explanation(style="width:1000px; height:200px;") }}</p>
+<input type="submit" value="Submit">
+
+
+
+{{ form.csrf_token }}
+<div>Type your question:</div>
+  <textarea required name="question" style="width:1000px; height:200px;"></textarea>
+  <div name="option" id="option">
+  <input type="text" name="choice" placeholder="Choice A"><select name="answer" id="answer"><option value="true">true</option><option value="false">false</option></select>
+  <input type="text" name="choice" placeholder="Choice B"><select name="answer" id="answer"><option value="true">true</option><option value="false">false</option></select>
+  <input type="text" name="choice" placeholder="Choice C"><select name="answer" id="answer"><option value="true">true</option><option value="false">false</option></select>
+  <input type="text" name="choice" placeholder="Choice D"><select name="answer" id="answer"><option value="true">true</option><option value="false">false</option></select>
+  </div>
+  <a>&nbsp </a>
+  <p>Type explanation:</p>
+  <textarea name="explanation" style="width:1000px; height:200px;"></textarea>
+<input type="submit" value="Submit">
+

@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+<div>
+    <p>Assessments List</p>
+</div>
+{% for assessment in assessments %}
+<div>
+    <a href="{{ url_for('delete_question_in_assessment', ass_id=assessment.id ) }}">{{ assessment.title }}</a>
+
+</div>
+{% endfor %}
+{% endblock content %}

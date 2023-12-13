@@ -1,0 +1,120 @@
+{% extends "layout.html" %}
+{% block content %}
+<form method="POST" action="/lecturer-assessment-create-formative">
+  
+  <div id="wrap">
+    <div  class="content">
+      {{ form.csrf_token }}
+      <a>&nbsp </a> 
+      Title: {{ form.title }}
+      
+    </div>
+  
+    <!-- <div id="box_count" value=1></div> -->
+    <!-- <form method="POST" action="">
+    {{ form.csrf_token }}
+    <div  class="card shadow-lg m-3 p-3">
+      <div>Type your question:</div>
+      <div class="field_box">{{ formQ.question_text(style="width:1000px; height:200px;") }}</div>
+      <div class="field_box">Choice A: {{ formC.choice_text }} Corrct answer: {{ formC.is_correct }}</div>
+      <div class="field_box">Choice B: {{ formC.choice_text }} Corrct answer: {{ formC.is_correct }}</div>
+      <div class="field_box">Choice C: {{ formC.choice_text }} Corrct answer: {{ formC.is_correct }}</div>
+      <div class="field_box">Choice D: {{ formC.choice_text }} Corrct answer: {{ formC.is_correct }}</div>
+      <a>&nbsp </a>
+      <div>Type explanation:</div>
+      <div class="field_box">{{ formQ.explanation(style="width:1000px; height:200px;") }}</div>
+      <input type="submit" value="Submit">
+    </div>
+    </form>
+
+    <div  class="card shadow-lg m-3 p-3" id="TF">
+      <div class="field_box">{{ formQ.question_text(style="width:1000px; height:200px;") }}</div>
+      <div>Is correct: {{ formTF.is_true }}</div>
+      <a>&nbsp </a>
+      <div>Type explanation:</div>
+      <div class="field_box">{{ formQ.explanation(style="width:1000px; height:200px;") }}</div>
+      <input type="submit" value="Submit">
+    </div> -->
+  </div>
+  <input type="button" value="Add a Multi-choice question" onclick="add_multi()">
+  <input type="button" value="Add a TF question" onclick="add_TF()">
+  <div><a>&nbsp </a></div>
+  <!-- {{ formC.submit }} -->
+  <input type="submit" value="Submit Assessment">
+  <a>number of questions: </a><input type="text" id="box_count" name="box_count" value=0 readonly>
+    <br>
+</form>
+    <a href="{{ url_for('ass_list') }}"><input type="button" value="View Formative Assessment List"></a>
+
+<!----------------------------------------------JavaScript---------------------------------------------->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+<script>
+  // var box_count = 0;
+  var box_count = jQuery("#box_count").val();
+  function add_multi(){
+
+
+    if(box_count<10){
+      box_count++;
+      jQuery("#box_count").val(box_count);
+      // true
+      jQuery("#wrap").append('<div class="card shadow-lg m-3 p-3" id="box_loop_'+box_count+'"><h style="color:blue;">Question</h><div>Type your question:</div><textarea required name="question'+box_count+'" style="width:1000px; height:200px;"></textarea><div name="option'+box_count+'" id="option'+box_count+'">' +
+          '<input type="text" name="choice'+box_count+'" placeholder="Choice A">' +
+          '<select name="answer'+box_count+'" id="answer'+box_count+'">' +
+          '<option value="True">True</option>' +
+          '<option value="False">False</option>' +
+          '</select>' +
+          '<input type="text" name="choice'+box_count+'" placeholder="Choice B">' +
+          '<select name="answer'+box_count+'" id="answer'+box_count+'">' +
+          '<option value="True">True</option>' +
+          '<option value="False">False</option>' +
+          '</select><input type="text" name="choice'+box_count+'" placeholder="Choice C">' +
+          '<select name="answer'+box_count+'" id="answer'+box_count+'">' +
+          '<option value="True">True</option><option value="False">False</option></select><input type="text" name="choice'+box_count+'" placeholder="Choice D"><select name="answer'+box_count+'" id="answer'+box_count+'"><option value="True">True</option><option value="False">False</option></select></div><a>&nbsp </a><p>Type explanation:</p><textarea name="explanation'+box_count+'" style="width:1000px; height:200px;"></textarea><input type="submit" value="Delete question" onclick="delete_question('+box_count+')"></div></div>');
+  
+
+      
+    }else if(box_count>=10){
+      window.alert("number of questions has reached the limit");
+      console.log("number of questions has reached the limit");
+    }
+    
+  }
+
+  // function add_TF(){
+    
+  //   if(box_count<10){
+  //   box_count++;
+  //   // jQuery("#box_count").val(box_count);
+  //   $.get('/tf', function(data) {
+  //     jQuery("#wrap").append('<div class="card shadow-lg m-3 p-3" id="box_loop_'+box_count+'"><h style="color:blue;">Question</h>'+ data +'<input type="submit" value="Delete question" onclick="delete_question('+box_count+')"></div></div>');
+  //   });
+    
+  //   }else if(box_count>=11){
+  //     console.log("number of questions has reach the limit");
+  //   }
+  // }
+
+  function add_TF(){
+    
+    if(box_count<10){
+    box_count++;
+    jQuery("#box_count").val(box_count);
+
+    jQuery("#wrap").append('<div class="card shadow-lg m-3 p-3" id="box_loop_'+box_count+'"><h style="color:blue;">Question</h><div>Type your question:</div><div><textarea required name="question'+box_count+'" style="width:1000px; height:200px;"></textarea><select name="tof'+box_count+'" id="answer"><option value="True">True</option><option value="False">False</option></select><div>Type explanation:</div><textarea name="explanation'+box_count+'" style="width:1000px; height:200px;"></textarea></div><input type="submit" value="Delete question" onclick="delete_question('+box_count+')"></div></div>');
+
+    
+  }else if(box_count>=11){
+      console.log("number of questions has reach the limit");
+    }
+  }
+
+  function delete_question(count){
+    jQuery("#box_loop_"+count).remove();
+    // var box_count=jQuery("#box_count").val();
+    box_count--;
+    jQuery("#box_count").val(box_count);
+  }
+
+</script>
+{% endblock content %}

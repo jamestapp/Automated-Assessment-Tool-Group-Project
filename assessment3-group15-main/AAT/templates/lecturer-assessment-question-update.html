@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+<div>
+    <p>Assessments Update</p>
+</div>
+<form action="" method="post">
+    <a>Title:</a><input type="text" name="title" placeholder="title" value="{{ assessment.title }}">
+    {% for question in questions %}
+    <div  class="card shadow-lg m-3 p-3">
+    <h>Question</h>
+    <textarea type="text" name="question_text" placeholder="Enter your question" style="width:1000px; height:200px;">{{ question.question_text }}</textarea>
+    {% if question.choices[0] %}
+    <div name="option" id="option">
+        <input type="text" name="choice" placeholder="Choice A" value="{{ question.choices[0].choice_text }}"><select name="answer" id="answer"><option option value="True">True</option><option value="False">False</option></select>
+        <input type="text" name="choice" placeholder="Choice B" value="{{ question.choices[1].choice_text }}"><select name="answer" id="answer"><option option value="True">True</option><option value="False">False</option></select>
+        <input type="text" name="choice" placeholder="Choice C" value="{{ question.choices[2].choice_text }}"><select name="answer" id="answer"><option option value="True">True</option><option value="False">False</option></select>
+        <input type="text" name="choice" placeholder="Choice D" value="{{ question.choices[3].choice_text }}"><select name="answer" id="answer"><option option value="True">True</option><option value="False">False</option></select>
+    </div>
+    {% else %}
+    <div>
+    <a>Answer: </a><select name="tf" id="tf"><option value="True">True</option><option value="False">False</option>{{ question.truefalse }}</select>
+    </div>
+    {% endif %}
+    <div>Type explanation:</div>
+    <textarea name="explanation" style="width:1000px; height:200px;">{{ question.explanation }}</textarea>
+    <button type="submit" name="question_id" id="Delete" value="{{ question.id }}" >Delete</button>
+    
+    </div>
+    {% endfor %}
+    <button type="submit" name="submit_button" id="Update" value="Update" >Update</button>
+</form>
+<div>
+    
+</div>
+
+</form>
+{% endblock content %}

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<div>
+    <p>Delete Question</p>
+</div>
+    <form method="post">
+{% for question in questions %}
+    <p>{{ question.question_text }}</p>
+<div>
+<button type="submit" name="question_id" id="question_id" value="{{ question.id }}" >Delete</button>
+
+</div>
+{% endfor %}
+    </form>
+{% endblock content %}

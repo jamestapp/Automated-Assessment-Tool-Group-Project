@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+<div>
+    <p>Assessment</p>
+</div>
+<form method="POST" action="">
+    {% for question in questions%}
+        <div>
+            <p>{{ question.question_text }}</p>
+            {% if question.choices[0] %}
+                {% for choice in question.choices%}
+                <p>
+                    <input type="radio" name="{{question.id}}" id="{{ choice.id }}" value="{{ choice.choice_text }}">
+                    <label for="{{ choice.id }}">{{ choice.choice_text }}</label>
+                </p>
+                {% endfor %}
+            {% else %}
+                <p>
+                    <input type="radio" name="{{question.id}}" id="true" value="True">
+                    <label for="true">True</label>
+                    <input type="radio" name="{{question.id}}" id="false" value="False">
+                    <label for="false">False</label>                
+                </p>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <input type="submit" value="Submit">
+</form>
+{% endblock content %}

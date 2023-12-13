@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Update Details</h1>
+<div class="card shadow-lg m-3 p-3">
+  <p>Please enter your new details for our records.</p>
+  <form method="POST" action="">
+    {{ form.csrf_token }}
+    <p>{{ form.userno.label(class_="form-label") }} {{ form.userno(class_="form-control") }}</p>
+    {% for error in form.userno.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+    <p>{{ form.name.label(class_="form-label") }} {{ form.name(class_="form-control") }}</p>
+    {% for error in form.name.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+    <input type="submit" value="Update" class="btn btn-primary">
+  </form>
+</div>
+{% endblock content %}

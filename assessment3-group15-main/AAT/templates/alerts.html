@@ -1,0 +1,33 @@
+<div class="alert">
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    {% if category in ('alert-info', 'alert-success', 'alert-warning', 'alert-danger')%}
+    <div class="{{ category }} alert alert-dismissible fade show">
+        {% else %}
+        <div class="alert-info alert alert-dismissible fade show">
+            {% endif%}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" title="dismiss"></button>
+            <span class="d-flex">
+                <p class="me-2">
+                    {% if category == 'alert-info' %}
+                    Information:
+                    {% elif category == 'alert-success' %}
+                    Success:
+                    {% elif category == 'alert-warning' %}
+                    Warning:
+                    {% elif category == 'alert-danger' %}
+                    Danger:
+                    {% else %}
+                    Information:
+                    {% endif %}
+                </p>
+                <p>
+                    {{ message }}
+                </p>
+            </span>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
